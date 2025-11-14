@@ -1,0 +1,61 @@
+.branch-tree {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  margin-top: 20px;
+}
+
+.branch-tree h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+.tree-container {
+  margin-top: 15px;
+}
+
+.tree-node {
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.node-content {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  transition: all 0.2s;
+}
+
+.node-content:hover {
+  background: #f0f0f0;
+  border-color: #2196F3;
+}
+
+.node-author {
+  font-weight: bold;
+  color: #2196F3;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.node-location {
+  color: #ff9800;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.node-text {
+  margin-top: 8px;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.children {
+  margin-top: 10px;
+  padding-left: 20px;
+  border-left: 2px solid #ddd;
+}
+

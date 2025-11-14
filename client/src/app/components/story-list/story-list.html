@@ -1,0 +1,59 @@
+<div class="story-list-container">
+  <div class="header">
+    <h1>共創小說</h1>
+    <button (click)="showCreateForm = !showCreateForm" class="btn-create">
+      {{ showCreateForm ? '取消' : '创建新故事' }}
+    </button>
+  </div>
+
+  <div *ngIf="dbError" class="error-banner">
+    <div class="error-content">
+      <h3>⚠️ {{ dbError.error || '数据库连接失败' }}</h3>
+      <p>{{ dbError.message || 'MongoDB 服务未运行' }}</p>
+      <div class="error-instructions" *ngIf="dbError.instructions">
+        <p><strong>解决方法:</strong></p>
+        <code>{{ dbError.instructions }}</code>
+      </div>
+      <div class="error-help" *ngIf="dbError.help">
+        <p>{{ dbError.help }}</p>
+      </div>
+      <button (click)="loadStories()" class="btn-retry">重试</button>
+    </div>
+  </div>
+
+  <div *ngIf="showCreateForm" class="create-form">
+    <h2>创建新故事</h2>
+    <div class="form-group">
+      <label>故事标题:</label>
+      <input type="text" [(ngModel)]="newStory.title" placeholder="输入故事标题" />
+    </div>
+    <div class="form-group">
+      <label>初始内容:</label>
+      <textarea [(ngModel)]="newStory.initialContent" placeholder="输入故事的开始..."></textarea>
+    </div>
+    <div class="form-group">
+      <label>作者昵称:</label>
+      <input type="text" [(ngModel)]="newStory.author" placeholder="匿名" />
+    </div>
+    <div class="form-group">
+      <label>场景/地点:</label>
+      <input type="text" [(ngModel)]="newStory.location" placeholder="例如：客厅" />
+    </div>
+    <button (click)="createStory()" class="btn-submit">创建</button>
+  </div>
+
+  <div class="stories-grid">
+    <div *ngFor="let story of stories" class="story-card" (click)="viewStory(story._id)">
+      <h3>{{ story.title }}</h3>
+      <p class="story-date">创建于: {{ story.createdAt | date:'short' }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="!dbError && !isLoading && stories.length === 0" class="empty-state">
+    <p>还没有故事，创建第一个吧！</p>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <p>加载中...</p>
+  </div>
+</div>

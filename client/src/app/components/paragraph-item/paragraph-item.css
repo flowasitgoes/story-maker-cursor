@@ -1,0 +1,56 @@
+.paragraph-item {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 0;
+}
+
+.paragraph-item:hover {
+  background: #f0f0f0;
+  border-color: #2196F3;
+}
+
+.paragraph-item.selected {
+  background: #e3f2fd;
+  border-color: #2196F3;
+  border-width: 2px;
+}
+
+.paragraph-header {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.author {
+  font-weight: bold;
+  color: #2196F3;
+}
+
+.location {
+  color: #ff9800;
+}
+
+.date {
+  margin-left: auto;
+  color: #999;
+}
+
+.paragraph-content {
+  color: #333;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.children {
+  margin-top: 15px;
+  padding-left: 0;
+}
+

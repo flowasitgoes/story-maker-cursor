@@ -1,0 +1,35 @@
+=========================================
+快速启动 MongoDB - 3个步骤
+=========================================
+
+【步骤 1】更新命令行工具
+在终端运行：
+  sudo rm -rf /Library/Developer/CommandLineTools
+  sudo xcode-select --install
+  
+等待安装完成（10-20分钟）
+
+【步骤 2】安装 MongoDB
+在终端运行：
+  brew tap mongodb/brew
+  brew install mongodb-community
+
+【步骤 3】启动 MongoDB
+在终端运行：
+  brew services start mongodb-community
+
+完成！刷新浏览器页面即可使用。
+
+=========================================
+或者使用云数据库（更快，无需安装）
+=========================================
+
+1. 访问: https://www.mongodb.com/cloud/atlas/register
+2. 注册免费账号
+3. 创建免费集群
+4. 获取连接字符串
+5. 在项目根目录创建 .env 文件：
+   MONGODB_URI=你的连接字符串
+6. 重启服务器
+
+=========================================

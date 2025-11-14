@@ -1,0 +1,115 @@
+<div class="story-view-container">
+  <div class="header">
+    <button (click)="router.navigate(['/'])" class="btn-back">← 返回列表</button>
+    <h1>{{ story?.title }}</h1>
+  </div>
+
+  <div class="main-content">
+    <div class="story-content">
+      <div class="actions">
+        <button (click)="showAddParagraph = !showAddParagraph" class="btn-action">
+          {{ showAddParagraph ? '取消' : '添加段落' }}
+        </button>
+      </div>
+
+      <div *ngIf="showAddParagraph" class="add-paragraph-form">
+        <h3>添加新段落</h3>
+        <div class="form-group">
+          <label>内容:</label>
+          <textarea [(ngModel)]="newParagraph.content" placeholder="输入段落内容..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>作者昵称:</label>
+          <input type="text" [(ngModel)]="newParagraph.author" placeholder="匿名" />
+        </div>
+        <div class="form-group">
+          <label>场景/地点:</label>
+          <input type="text" [(ngModel)]="newParagraph.location" [placeholder]="selectedParagraph?.location || '例如：客厅'" />
+          <small *ngIf="selectedParagraph?.location && !newParagraph.location" style="color: #666; font-size: 12px; display: block; margin-top: 5px;">
+            提示: 当前段落场景为「{{ selectedParagraph.location }}」，留空将使用相同场景
+          </small>
+        </div>
+        <button (click)="addParagraph()" class="btn-submit">添加</button>
+      </div>
+
+      <div class="paragraphs-list">
+        <!-- 递归渲染段落树 -->
+        <ng-container *ngFor="let para of tree">
+          <ng-container *ngTemplateOutlet="renderParagraph; context: { paragraph: para, level: 0 }"></ng-container>
+        </ng-container>
+      </div>
+
+      <!-- 递归模板 -->
+      <ng-template #renderParagraph let-paragraph="paragraph" let-level="level">
+        <div class="paragraph-item" 
+             [class.selected]="selectedParagraph?._id === paragraph._id"
+             [style.margin-left.px]="level * 30"
+             (click)="selectParagraph(paragraph); $event.stopPropagation()">
+          <div class="paragraph-header">
+            <span class="author">{{ paragraph.author }}</span>
+            <span class="location" *ngIf="paragraph.location">在「{{ paragraph.location }}」</span>
+            <span class="date">{{ paragraph.createdAt | date:'short' }}</span>
+          </div>
+          <div class="paragraph-content">
+            {{ paragraph.content }}
+          </div>
+          
+          <!-- 递归渲染子段落 - 支持无限层级 -->
+          <div *ngIf="paragraph.children && paragraph.children.length > 0" class="children">
+            <ng-container *ngFor="let child of paragraph.children">
+              <ng-container *ngTemplateOutlet="renderParagraph; context: { paragraph: child, level: level + 1 }"></ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+
+    <div class="sidebar">
+      <div *ngIf="selectedParagraph" class="contribution-panel">
+        <h3>接话面板</h3>
+        <div class="selected-paragraph-info">
+          <p><strong>选中段落:</strong></p>
+          <p class="paragraph-preview">{{ selectedParagraph.content }}</p>
+        </div>
+
+        <button (click)="showContributionForm = !showContributionForm" class="btn-action">
+          {{ showContributionForm ? '取消' : '提交接话' }}
+        </button>
+
+        <div *ngIf="showContributionForm" class="contribution-form">
+          <div class="form-group">
+            <label>接话内容:</label>
+            <textarea [(ngModel)]="newContribution.content" placeholder="输入你的接话..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>你的昵称:</label>
+            <input type="text" [(ngModel)]="newContribution.author" placeholder="匿名" />
+          </div>
+          <button (click)="submitContribution()" class="btn-submit">提交</button>
+        </div>
+
+        <div class="contributions-list">
+          <h4>待处理的接话 ({{ contributions.length }})</h4>
+          <div *ngFor="let contrib of contributions" class="contribution-item">
+            <div class="contribution-header">
+              <span class="author">{{ contrib.author }}</span>
+              <span class="date">{{ contrib.createdAt | date:'short' }}</span>
+            </div>
+            <div class="contribution-content">{{ contrib.content }}</div>
+            <div class="contribution-actions">
+              <button (click)="acceptContribution(contrib)" class="btn-accept">接受</button>
+              <button (click)="rejectContribution(contrib)" class="btn-reject">拒绝</button>
+            </div>
+          </div>
+          <div *ngIf="contributions.length === 0" class="empty-contributions">
+            <p>暂无待处理的接话</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="!selectedParagraph" class="no-selection">
+        <p>点击段落查看接话</p>
+      </div>
+    </div>
+  </div>
+</div>

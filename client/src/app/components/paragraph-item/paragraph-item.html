@@ -1,0 +1,24 @@
+<div class="paragraph-item" 
+     [class.selected]="selectedParagraph?._id === paragraph._id"
+     [style.margin-left.px]="level * 30"
+     (click)="onSelect($event)">
+  <div class="paragraph-header">
+    <span class="author">{{ paragraph.author }}</span>
+    <span class="location" *ngIf="paragraph.location">在「{{ paragraph.location }}」</span>
+    <span class="date">{{ paragraph.createdAt | date:'short' }}</span>
+  </div>
+  <div class="paragraph-content">
+    {{ paragraph.content }}
+  </div>
+  
+  <!-- 递归渲染子段落 - 支持无限层级 -->
+  <div *ngIf="paragraph.children && paragraph.children.length > 0" class="children">
+    <app-paragraph-item 
+      *ngFor="let child of paragraph.children"
+      [paragraph]="child"
+      [selectedParagraph]="selectedParagraph"
+      [level]="level + 1"
+      (selectParagraph)="selectParagraph.emit($event)">
+    </app-paragraph-item>
+  </div>
+</div>

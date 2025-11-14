@@ -1,0 +1,23 @@
+<div class="branch-tree">
+  <h3>故事分支树</h3>
+  <div class="tree-container">
+    <div *ngFor="let para of renderTree(paragraphs)" class="tree-node" [style.margin-left.px]="para.level * 30">
+      <div class="node-content">
+        <span class="node-author">{{ para.author }}</span>
+        <span class="node-location" *ngIf="para.location">在「{{ para.location }}」</span>
+        <div class="node-text">{{ para.content.substring(0, 50) }}{{ para.content.length > 50 ? '...' : '' }}</div>
+      </div>
+      <div *ngIf="para.children && para.children.length > 0" class="children">
+        <div *ngFor="let child of renderTree(para.children, para.level + 1)" 
+             class="tree-node" 
+             [style.margin-left.px]="child.level * 30">
+          <div class="node-content">
+            <span class="node-author">{{ child.author }}</span>
+            <span class="node-location" *ngIf="child.location">在「{{ child.location }}」</span>
+            <div class="node-text">{{ child.content.substring(0, 50) }}{{ child.content.length > 50 ? '...' : '' }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
