@@ -2,7 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const API_URL = 'http://localhost:3000/api';
+// 使用环境变量，如果不存在则使用默认值
+const API_URL = (typeof window !== 'undefined' && (window as any).__API_URL__) 
+  || process.env['NG_APP_API_URL'] 
+  || '/api';
 
 export interface Story {
   _id: string;
